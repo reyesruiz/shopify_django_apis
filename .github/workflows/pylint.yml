@@ -19,6 +19,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install pylint
         if [ -f requirements.txt ]; then pip install --upgrade -r requirements.txt; fi
+    - name: Create Shopify-Config.json
+      uses: finnp/create-file-action@1.0.0
+        env:
+          FILE_NAME: $HOME/.Shopify-Config.json
+          FILE_DATA: ${{ secrets.SHOPIFY_CONFIG }}
     - name: Analysing the code with pylint
       run: |
         pylint $(git ls-files '*.py')
