@@ -24,6 +24,9 @@ jobs:
       env:
         FILE_NAME: ".Shopify-Config.json"
         FILE_DATA: ${{ secrets.SHOPIFY_CONFIG }}
+    - name: Move Shopify-Config to home directory
+      run: |
+        mv .Shopify-Config.json ~/.Shopify-Config.json
     - name: Analysing the code with pylint
       run: |
         pylint $(git ls-files '*.py')
