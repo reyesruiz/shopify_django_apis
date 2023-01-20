@@ -4,6 +4,8 @@ views
 import sys
 from django.http import HttpResponse
 from django.http import JsonResponse
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 from com_digitalruiz_my_logger import my_logger
 from com_digitalruiz_shopify_tools import shopify_tools
 from com_digitalruiz_shopify_apis import shopify_apis as shopify
@@ -17,50 +19,72 @@ def index(request):
     LOGGER.info(request)
     return HttpResponse("Hello, world. You're at the polls index.")
 
-def test(request):
+class Test(APIView):
     '''
-    test page
+    Test
     '''
-    LOGGER.info(request)
-    return HttpResponse("This is a test")
+    permission_classes = (IsAuthenticated,)
+    def get(self, request):
+        '''
+        test page
+        '''
+        LOGGER.info(request)
+        return HttpResponse("This is a test")
 
-def products(request):
+class Products(APIView):
     '''
-    api to get all products
+    Products
     '''
-    LOGGER.info(request)
-    products_data = shopify.get_all_products()
-    return JsonResponse(products_data, safe=False)
+    permission_classes = (IsAuthenticated,)
+    def get(self, request):
+        '''
+        api to get all products
+        '''
+        LOGGER.info(request)
+        products_data = shopify.get_all_products()
+        return JsonResponse(products_data, safe=False)
 
-def product(request, product_id=0):
+class Product(APIView):
     '''
-    return product object
+    product
     '''
-    LOGGER.info(request)
-    if product_id == 0 or not product_id:
-        return HttpResponse("Please provide a product id in the url")
-    shopify_product_data = shopify.get_shopify_product_data(product_id)
-    if shopify_product_data:
-        return JsonResponse(shopify_product_data, safe=False)
-    return None
+    def get(self, request, product_id=0):
+        '''
+        return product object
+        '''
+        LOGGER.info(request)
+        if product_id == 0 or not product_id:
+            return HttpResponse("Please provide a product id in the url")
+        shopify_product_data = shopify.get_shopify_product_data(product_id)
+        if shopify_product_data:
+            return JsonResponse(shopify_product_data, safe=False)
+        return None
 
-def check_barcodes(request):
+class CheckBarcodes(APIView):
     '''
-    Function to check if there are any duplicate barcodes
+    Check Barcodes
     '''
-    LOGGER.info(request)
-    response = shopify_tools.check_barcodes()
-    return HttpResponse(response)
+    def get(self, request):
+        '''
+        Function to check if there are any duplicate barcodes
+        '''
+        LOGGER.info(request)
+        response = shopify_tools.check_barcodes()
+        return HttpResponse(response)
 
-def generate_barcodes(request, product_id=0):
+class GenerateBarcodes(APIView):
     '''
-    Function to generate barcodes
+    Generate Barcodes
     '''
-    LOGGER.info(request)
-    if product_id == 0 or not product_id:
-        return HttpResponse("Please provide a product id in the url")
-    response = shopify_tools.generate_barcodes(product_id)
-    print(response)
-    if response:
-        return JsonResponse(response)
-    return HttpResponse(status=500)
+    def get(self, request, product_id=0):
+        '''
+        Function to generate barcodes
+        '''
+        LOGGER.info(request)
+        if product_id == 0 or not product_id:
+            return HttpResponse("Please provide a product id in the url")
+        response = shopify_tools.generate_barcodes(product_id)
+        print(response)
+        if response:
+            return JsonResponse(response)
+        return HttpResponse(status=500)
