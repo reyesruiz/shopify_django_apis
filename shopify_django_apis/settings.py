@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,13 +21,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-++&dvmfq^&=&rl9#5q(raf@r#gn8em3^g96f+#_1mn_e$@jh4@'
+SECRET_KEY = os.environ["SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ['ALLOWED_HOSTS'].split(',')
 
+SECURE_HSTS_SECONDS = 2_592_000
+SECURE_HSTS_PRELOAD = True
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 
 # Application definition
 
@@ -38,6 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'shopify_apis',
 ]
 
 MIDDLEWARE = [
@@ -55,6 +63,7 @@ MIDDLEWARE = [
 #
 #]
 CORS_ALLOW_ALL_ORIGINS  = True
+CSRF_COOKIE_SECURE = True
 
 ROOT_URLCONF = 'shopify_django_apis.urls'
 

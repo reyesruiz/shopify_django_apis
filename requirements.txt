@@ -1,5 +1,7 @@
 Django
 django-cors-headers
+django-csp
+djangorestframework
 com-digitalruiz-my-logger
 com-digitalruiz-shopify-tools
 com-digitalruiz-shopify-apis
