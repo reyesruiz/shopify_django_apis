@@ -45,7 +45,8 @@ export shopify_access_token='{shopify access token}'
 export shopify_deafult_location='{default shopify location id for inventory purposes}'
 export ALLOWED_HOSTS='{allowed hosts comma separated'
 export DJANGO_DEBUG='True or False'
-export SECRET_KEY='secrete key for django'
+export SECRET_KEY='secret key for django'
+export WEB_BIND='0.0.0.0:8000'
 ```
 **Variables explanation**
 |Variable name|Description |Example|Reference|
@@ -57,6 +58,7 @@ export SECRET_KEY='secrete key for django'
 |ALLOWED_HOSTS|Allowed hosts for django application to work values in comma separated|my-shopify-django-app.mydomainname.com,localhost,127.0.0.1|https://docs.djangoproject.com/en/4.1/ref/settings/#allowed-hosts|
 |DJANGO_DEBUG|Debug settings for django, for production set to False, for development set to True|False|https://docs.djangoproject.com/en/4.1/ref/settings/#debug|
 |SECRET_KEY|Django secret key, check below on how to generate one|ccn)gl6%%o5c9fi$z32ssl954hs4awz$i%k5uyvwodb9vu65z=|https://docs.djangoproject.com/en/4.1/ref/settings/#secret-key|
+|WEB_BIND|Address bind for gunicorn to run on, 0.0.0.0 means all ips, and after we set the port we want our app to be served from like port 8000|0.0.0.0:8000|https://docs.gunicorn.org/en/stable/settings.html#server-socket|
 
 **Generate a secret key**
 ```
@@ -109,10 +111,25 @@ gunicorn -c config/gunicorn/prod.py
 If everything went right, when you tail /var/log/gunicorn/dev.log or /var/log/gunicorn/error.log you will be able to see it has been started correctly, you can access it via http://{host-ip}:8000
 You will get an error about ip not being added in ALLOWED_HOSTS.
 
+# Create another site
+
+**change back to previous directory**
+```
+cd ..
+```
+
+**Deactivate current enviroment**
+```
+deactivate
+```
+
+**Re run all the steps from above with your new configurations**
+
+
 
 ## Things To do
 
  1. Update this document to include Nginx configurations, to serve via HTTPS
  2. Add token authentication so we can protect our application, since this app has access to Shopify, we don't want anybody messing around with this.
-
+ 3. Once it is running make it survive a reboot
 
