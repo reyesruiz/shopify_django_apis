@@ -1,4 +1,5 @@
 """Gunicorn *development* config file"""
+import os
 
 # pylint: disable=invalid-name
 # Django WSGI application path in pattern MODULE_NAME:VARIABLE_NAME
@@ -8,7 +9,7 @@ loglevel = "debug"
 # The number of worker processes for handling requests
 workers = 2
 # The socket to bind
-bind = "0.0.0.0:8000"
+bind = os.environ.get('WEB_BIND')
 # Restart workers when code changes (development only!)
 reload = True
 # Write access and error info to /var/log
