@@ -17,7 +17,7 @@ def index(request):
     index page
     '''
     LOGGER.info(request)
-    return HttpResponse("Hello, world. You're at the polls index.")
+    return HttpResponse("Hello, world. You're at the index.")
 
 class Test(APIView):
     '''
@@ -48,6 +48,7 @@ class Product(APIView):
     '''
     product
     '''
+    permission_classes = (IsAuthenticated,)
     def get(self, request, product_id=0):
         '''
         return product object
@@ -64,6 +65,7 @@ class CheckBarcodes(APIView):
     '''
     Check Barcodes
     '''
+    permission_classes = (IsAuthenticated,)
     def get(self, request):
         '''
         Function to check if there are any duplicate barcodes
@@ -76,6 +78,7 @@ class GenerateBarcodes(APIView):
     '''
     Generate Barcodes
     '''
+    permission_classes = (IsAuthenticated,)
     def get(self, request, product_id=0):
         '''
         Function to generate barcodes
