@@ -13,9 +13,11 @@ bind = '0.0.0.0:' + os.environ.get('SHOPIFY_APIS_PORT')
 # Write access and error info to /var/log
 accesslog = "/var/log/gunicorn/shopify-apis." + \
         os.environ.get('shopify_store_name') + \
+        "." + \
         os.environ.get('domain_name') + ".access.log"
 errorlog = "/var/log/gunicorn/shopify-apis." + \
         os.environ.get('shopify_store_name') + \
+        "." + \
         os.environ.get('domain_name') + ".error.log"
 # Redirect stdout/stderr to log file
 capture_output = True

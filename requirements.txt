@@ -1,3 +1,4 @@
+gunicorn
 Django
 django-cors-headers
 django-csp
